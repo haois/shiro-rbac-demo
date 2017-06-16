@@ -1,0 +1,13 @@
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLwFiR8UUmzEe8ZFGrfpaRqxIzemnLlgluGmbmyCTVQQTrv0gUzEPcCNr5mQz2cLvGMY1kOEJHl1zdDDInyhTa3HxkHX5dwK1uL6yc3V9sqV/NarzVB12GxDzJORdY4OntdGLPqzAaCHKQFCJN08wEP5FRoiyowns7AgKI6Mu/5ACVJrwSR8RI7/pk7e5VIliuzTUzqgPGQNKnxBXqIn9XaAOJLHdtcg4rrSlKOBJ9aWjlkFR40aKxR1lV+hCEDr6uQEKiu7Ypq/FvlvmCwonhMxTP5alCXd4pQp9do7SyL3IR61xa0jP3Qucv3DMaCH4MnodAz1nt/EOecNJ712uZ 810989881@qq.com*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.idea
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*

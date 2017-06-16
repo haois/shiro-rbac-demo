@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="gcu.module.rbac.dao.mapper.UserMapper">
+    <resultMap id="UserMap" type="gcu.module.rbac.daomain.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <insert id="addUser">
+        INSERT INTO t_user(username,password,nickname,status)
+        VALUES (#{user.username,jdbcType=VARCHAR},
+                #{user.password,jdbcType=VARCHAR},
+                #{user.nickname,jdbcType=VARCHAR},
+                #{user.status,jdbcType=INTEGER})
+    </insert>
+    <update id="updateUser">
+        UPDATE t_user us
+        <set>
+            us.nickname = #{user.nickname,jdbcType=VARCHAR},
+            us.status = #{user.status,jdbcType=VARCHAR}
+        </set>
+        where us.id = #{user.id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM t_user
+        WHERE id = #{id}
+    </delete>
+
+    <select id="queryUserByName" resultMap="UserMap">
+        SELECT *
+        FROM t_user us
+        WHERE us.username = #{username}
+    </select>
+    <select id="getUserList" resultType="gcu.module.rbac.daomain.User">
+        SELECT *
+        FROM t_user
+    </select>
+    <select id="queryUserByRole" resultType="gcu.module.rbac.daomain.User">
+        SELECT us
+        FROM t_user us,t_role ro,t_user_role ur
+        WHERE us.id = ur.userId AND ro.id = ur.roleId AND ro.id = #{roleId}
+    </select>
+    <select id="queryUserById" resultType="gcu.module.rbac.daomain.User">
+        SELECT *
+        FROM t_user us
+        WHERE us.id = #{id}
+    </select>
+</mapper>

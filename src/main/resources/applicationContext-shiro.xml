@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="urlPermissionResolver" class="gcu.shiro.UrlPermissionResovler"/>
+    <!--配置角色认证和授权realm-->
+    <bean id="permissionRealm" class="gcu.shiro.PerRealm">
+       <!-- <property name="cachingEnabled" value="true"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="shiro-authenticationCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="shiro-authorizationCaching"/>-->
+    </bean>
+    <!-- 定义or角色过滤器 -->
+    <bean id="resourceFilter" class="gcu.shiro.ResourecCheckFilter">
+        <property name="errorUrl" value="user/noAuthority"/>
+    </bean>
+    <!--定义info的加密算法-->
+    <bean id="hashMatch" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+    </bean>
+    <!--缓存管理-->
+    <bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache/shiro-ehcache.xml"/>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="permissionRealm"/>
+        <property name="cacheManager" ref="ehCacheManager"/>
+        <property name="authorizer.permissionResolver" ref="urlPermissionResolver"/>
+    </bean>
+
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="loginUrl" value="/login/index"/>
+        <property name="securityManager" ref="securityManager"/>
+        <property name="successUrl" value="/owner/list"/>
+        <property name="unauthorizedUrl" value="/user/noAuthority"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /css/** = anon
+                /font/** = anon
+                /img/** = anon
+                /js/** = anon
+                /conn/* = anon
+
+                /login/** = anon
+                /user/noAuthority = anon
+                /**=authc,resourceFilter
+
+            </value>
+        </property>
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>
