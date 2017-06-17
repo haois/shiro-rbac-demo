@@ -3,7 +3,6 @@ package gcu.module.rbac.service;
 import gcu.module.rbac.dao.UserDao;
 import gcu.module.rbac.daomain.User;
 import gcu.shiro.ShiroKit;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -11,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
@@ -67,5 +67,9 @@ public class UserService {
     }
     public User queryUserById(int id){
        return userDao.queryUserById(id);
+    }
+
+    public int getLastId(){
+        return userDao.getLastId();
     }
 }

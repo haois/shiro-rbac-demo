@@ -32,5 +32,7 @@ public interface UserMapper {
 
    User queryUserById(@Param("id") int id);
 
+    int lastInsertId();
+
 
 }

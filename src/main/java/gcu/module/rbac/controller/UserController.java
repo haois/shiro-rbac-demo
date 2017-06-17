@@ -6,7 +6,7 @@ import gcu.module.rbac.daomain.User;
 import gcu.module.rbac.service.ResourceService;
 import gcu.module.rbac.service.RoleService;
 import gcu.module.rbac.service.UserService;
-import org.aspectj.apache.bcel.generic.IINC;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class UserController {
 
     @RequestMapping("/noAuthority")
     public String noAuthority(){
-        return "/common/noAuthority";
+        return "/rbac/noAuthority";
     }
 
     @RequestMapping("/add")
@@ -82,6 +82,27 @@ public class UserController {
     public String del(@PathVariable int id){
         userService.delete(id);
         roleService.deleteUserRoleByUser(id);
+        return "redirect:/user/list";
+    }
+
+    @RequestMapping( value = "/update",method = RequestMethod.POST)
+    public String update(Model model,User user){
+        String roleitems = user.getRolesitems();
+        if(user.getId() == 0){
+            userService.add(user);
+            int  id = userService.getLastId();
+            user.setId(id);
+        }else {
+            userService.update(user);
+        }
+        if (StringUtils.isNotEmpty(roleitems)){
+            String[] strs = roleitems.split(",");
+            roleService.deleteUserRoleByUser(user.getId());
+            for (String str:strs){
+                int roleId = Integer.parseInt(str);
+                roleService.addUserRole(user.getId(), roleId);
+            }
+        }
         return "redirect:/user/list";
     }
 }

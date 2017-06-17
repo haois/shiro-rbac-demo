@@ -79,7 +79,7 @@ public class UserDao {
             mapper.updateUser(user);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
+
         }
     }
 
@@ -88,8 +88,17 @@ public class UserDao {
            return mapper.queryUserById(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
+
             return null;
+        }
+    }
+
+    public Integer getLastId() {
+        try {
+           return mapper.lastInsertId();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return 0;
         }
     }
 }

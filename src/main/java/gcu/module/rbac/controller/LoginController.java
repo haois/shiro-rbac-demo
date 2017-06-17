@@ -28,7 +28,7 @@ public class LoginController {
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String login(){
-        return "/user/login";
+        return "/rbac/login";
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
@@ -41,14 +41,14 @@ public class LoginController {
             return "redirect:/user/list";
         }catch (AuthenticationException e){
             logger.error(e.getMessage());
-            model.addAttribute("loginname",username);
+            model.addAttribute("account",username);
             model.addAttribute("error",e.getMessage());
         }catch (Exception e){
             logger.error(e.getMessage());
-            model.addAttribute("loginname",username);
+            model.addAttribute("account",username);
             model.addAttribute("error","系统发生错误");
         }
-        return "/user/login";
+        return "/rbac/login";
         }
 
     @RequestMapping(value = "/logout")

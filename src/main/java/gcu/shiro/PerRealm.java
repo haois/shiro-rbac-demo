@@ -6,16 +6,11 @@ import gcu.module.rbac.daomain.User;
 import gcu.module.rbac.service.ResourceService;
 import gcu.module.rbac.service.RoleService;
 import gcu.module.rbac.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by haol on 2016/9/9.
@@ -76,35 +70,58 @@ public class PerRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
         String username = authenticationToken.getPrincipal().toString();
-        logger.info("用户[{}]进入登陆验证", username);
         String password = new String((char[]) authenticationToken.getCredentials());
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, getName());
-        info.setCredentialsSalt(ByteSource.Util.bytes(username));
-        logger.info("用户[{}]登陆验证完成", username);
+        String md5Pwd = ShiroKit.md5Pwd(password, username);
+        logger.info("用户[{}]进入登录验证", username);
+        User user = userService.queryUserByName(username);
+
+        if (user == null) {
+            throw new UnknownAccountException("用户名不存在");
+        } else {
+            if (!user.getPassword().equals(md5Pwd)) {
+                throw new IncorrectCredentialsException("密码错误");
+            }
+            if (user.getStatus().equals("0")) {
+                throw new LockedAccountException("用户账号已被锁定");
+            }
+        }
+
+          /*  *//*将登陆用户的信息存进session*//*
+            SecurityContextHolder.setUser(user);*/
+
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, this.getName());
+        /**
+         * 很大的疑惑这个
+         *   info.setCredentialsSalt(ByteSource.Util.bytes(password));
+         *   应该是设置username这个盐值得可是设置就会出错
+         *   设置成password就没问题
+         */
+        info.setCredentialsSalt(ByteSource.Util.bytes(password));
+        logger.info("用户[{}]进入登录验证成功", username);
         return info;
     }
-
-    /*清除授权的缓存*/
+/*
+    *//*清除授权的缓存*//*
     @Override
     protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
-       /* Cache cache =this.getAuthorizationCache();
+        Cache cache =this.getAuthorizationCache();
         Set<Object> objects = cache.keys();
         for (Object o :objects){
             System.out.println("授权缓存:"+o+"--------"+cache.get(o)+"--------");
-        }*/
+        }
         super.clearCachedAuthorizationInfo(principals);
     }
 
-    /*清除身份认证的缓存*/
+    *//*清除身份认证的缓存*//*
     @Override
     protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
-        /*Cache cache = this.getAuthenticationCache();
+        Cache cache = this.getAuthenticationCache();
         Set<Object> objects = cache.keys();
         for (Object o :objects){
             System.out.println("认证缓存:"+o+"--------"+cache.get(o)+"--------");
         }
         User user = ((User) principals.getPrimaryPrincipal());
-        SimplePrincipalCollection info = new SimplePrincipalCollection(user.getUsername(),getName());*/
+        SimplePrincipalCollection info = new SimplePrincipalCollection(user.getUsername(),getName());
         super.clearCachedAuthenticationInfo(principals);
-    }
+    }*/
 }

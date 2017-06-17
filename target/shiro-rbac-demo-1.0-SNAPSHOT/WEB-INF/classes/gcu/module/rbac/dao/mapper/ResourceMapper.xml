@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="gcu.module.rbac.dao.mapper.ResourceMapper">
+
+    <resultMap id="resourceMap" type="gcu.module.rbac.daomain.Resource">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="permission" property="permission"/>
+    </resultMap>
+    <resultMap id="role_resourceMap" type="gcu.module.rbac.daomain.RoleResource">
+        <id column="id" property="id"/>
+        <result column="roleId" property="roleId"/>
+        <result column="resId" property="resId"/>
+    </resultMap>
+
+    <sql id="columnSql_re">
+       re.id,
+       re.name,
+       re.permission,
+       re.url
+    </sql>
+    <sql id="columnSql_rr">
+        rr.id,
+        rr.roleId,
+        rr.resId
+    </sql>
+
+    <insert id="addRoleResource">
+        INSERT INTO t_role_res(roleId,resId)
+        VALUES (#{roleId},#{resId})
+    </insert>
+    <insert id="addRes">
+        INSERT INTO t_resource(name,permission,url)
+        VALUES (#{res.name,jdbcType=VARCHAR},#{res.permission,jdbcType=VARCHAR},
+                #{res.url,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateRes">
+        UPDATE  t_resource re
+        <set>
+          re.name = #{res.name,jdbcType=VARCHAR},
+          re.permission = #{res.permission,jdbcType=VARCHAR},
+          re.url = #{res.url,jdbcType=VARCHAR}
+        </set>
+        WHERE re.id = #{res.id,jdbcType=INTEGER}
+    </update>
+    <delete id="delRoleResource">
+        DELETE FROM t_role_res
+        WHERE roleId = #{roleId} AND resId = #{resId}
+    </delete>
+    <delete id="deleteRes">
+        DELETE FROM t_resource
+        WHERE id = #{id}
+    </delete>
+    <delete id="delResResourceByRole">
+         DELETE FROM t_role_res
+          WHERE roleId = #{roleId}
+    </delete>
+    <delete id="deletetRoleResByRes">
+        DELETE FROM t_role_res
+        WHERE resId = #{resId}
+    </delete>
+    <select id="queryResourceByRole" resultType="gcu.module.rbac.daomain.Resource">
+        SELECT <include refid="columnSql_re"/>
+        FROM t_role ro,t_resource re,t_role_res rr
+        WHERE ro.id = rr.roleId AND rr.resId = re.id AND ro.id = #{roleId}
+    </select>
+    <select id="getResourceList" resultType="gcu.module.rbac.daomain.Resource">
+        SELECT <include refid="columnSql_re"/>
+        FROM t_resource re
+    </select>
+    <select id="loadRoleResource" resultType="gcu.module.rbac.daomain.RoleResource">
+        SELECT <include refid="columnSql_rr"/>
+        FROM t_role_res rr
+        WHERE rr.roleId = #{roleId} and rr.resId =#{resId}
+    </select>
+    <select id="queryResourceByUser" resultType="gcu.module.rbac.daomain.Resource">
+        SELECT DISTINCT <include refid="columnSql_re"/>
+        FROM t_user us,t_role ro,t_user_role ur,t_resource re,t_role_res rr
+        WHERE us.id = ur.userId AND ur.roleId = rr.roleId AND rr.resId = re.id AND us.id =#{uid}
+    </select>
+    <select id="queryResById" resultType="gcu.module.rbac.daomain.Resource">
+        SELECT <include refid="columnSql_re"/>
+        FROM t_resource re
+        WHERE re.id = #{id}
+    </select>
+</mapper>

@@ -14,7 +14,7 @@ public class ShiroKit {
     }
     @Test
     public void md5Pwd(){
-        String md5Pwd = new Md5Hash("gcu","zhangsan").toHex();
+        String md5Pwd = new Md5Hash("gcu","hgits").toHex();
         System.out.println(md5Pwd);
     }
 }
