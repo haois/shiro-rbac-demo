@@ -38,6 +38,14 @@
                 <p class="bg-warning"> ${error} </p>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="input-group text-center" style="margin: auto">
+                <p class="bg-info">超级管理员</p>
+                <p class="bg-info">账号:gcu</p>
+                <p class="bg-info">密码:gcu</p>
+            </div>
+        </div>
     </form>
 </div>
 </body>

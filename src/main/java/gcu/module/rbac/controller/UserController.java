@@ -91,6 +91,9 @@ public class UserController {
         @RequestMapping(value = "/update", method = RequestMethod.POST)
         public String update(Model model, User user) {
                 String roles = user.getRolesitems();
+                if (user.getUsername().equals("gcu")){
+                        return "redirect:/user/list";
+                }
                 if (user.getId() == 0) {
                         userService.add(user);
                         int id = userService.getLastId();
