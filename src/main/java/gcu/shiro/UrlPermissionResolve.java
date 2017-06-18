@@ -6,6 +6,7 @@ import org.apache.shiro.authz.permission.WildcardPermission;
 
 /**
  * Created by haol on 2016/9/12.
+ * 将user/* 处理为 user:*
  */
 public class UrlPermissionResolve implements PermissionResolver{
     public Permission resolvePermission(String s) {

@@ -35,7 +35,7 @@ public class ResourceCheckFilter extends AccessControlFilter {
         System.out.println("你无权访问此页面");
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        response.sendRedirect(request.getContextPath()+"/rbac/noAuthority");
+        response.sendRedirect(request.getContextPath()+"/user/noAuthority");
         return false;
     }
 }

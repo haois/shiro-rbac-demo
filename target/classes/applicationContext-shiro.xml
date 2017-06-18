@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="urlPermissionResolver" class="gcu.shiro.UrlPermissionResolve"/>
     <!--配置角色认证和授权realm-->
@@ -14,7 +15,7 @@
     </bean>
     <!-- 定义or角色过滤器 -->
     <bean id="resourceFilter" class="gcu.shiro.ResourceCheckFilter">
-        <property name="errorUrl" value="user/noAuthority"/>
+        <property name="errorUrl" value="/user/noAuthority"/>
     </bean>
     <!--定义info的加密算法-->
     <bean id="hashMatch" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -43,9 +44,9 @@
                 /font/** = anon
                 /img/** = anon
                 /js/** = anon
-                /conn/* = anon
 
                 /login/** = anon
+                /user/info = anon
                 /user/noAuthority = anon
                 /**= authc,resourceFilter
 

@@ -26,4 +26,7 @@ $(function(){
         alert("该功能不存在");
     })
 
+    $("#InfoBtn").click(function(){
+        window.location.href = window.ctx +"/user/info";
+    })
 })

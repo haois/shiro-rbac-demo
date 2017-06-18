@@ -11,24 +11,24 @@
         <div class="col-md-1">
             <div class="form-group">
                 <div class="input-group" style="margin: auto">
-                    <button class="btn btn-success" type="button" id="usListBtn">user/list</button>
+                    <button class="btn btn-success" type="button" id="usListBtn">用户列表</button>
                 </div>
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-group">
                 <div class="input-group" style="margin: auto">
-                    <button class="btn btn-success" type="button" id="usAddBtn">user/add</button>
+                    <button class="btn btn-success" type="button" id="usAddBtn">用户增加</button>
                 </div>
             </div>
         </div>
         <div class="col-md-1">
-
+            <div class="form-group">
+                <div class="input-group" style="margin: auto">
+                    <button class="btn btn-success" type="button" id="reListBtn">资源管理</button>
+                </div>
+            </div>
         </div>
-        <div class="col-md-1">
-
-        </div>
-
         <div class="col-md-1">
             <div class="form-group">
                 <div class="input-group" style="margin: auto">
@@ -43,16 +43,21 @@
 
         </div>
         <div class="col-md-1">
+            <div class="form-group">
+                <div class="input-group" style="margin: auto">
+                    <a class="btn btn-success" type="button" id="InfoBtn">我的信息</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
 
         </div>
 
         <div class="col-md-1">
-            <div class="form-group">
-                <div class="input-group" style="margin: auto">
-                    <button class="btn btn-success" type="button" id="reListBtn">资源管理</button>
-                </div>
-            </div>
+
         </div>
+
+
         <div class="col-md-1">
 
         </div>
@@ -68,7 +73,7 @@
         <div class="col-md-1">
             <div class="form-group">
                 <div class="input-group" style="margin: auto">
-                    <button class="btn btn-success" type="button" id="logoutBtn">退出</button>
+                    <button class="btn btn-danger" type="button" id="logoutBtn">退出</button>
                 </div>
             </div>
         </div>
@@ -76,5 +81,5 @@
 </div>
 </div>
 </body>
-<script type="text/javascript" src="${ctx}/js/rbac/home.js"></script>
+<script type="text/javascript" src="${ctx}/js/rbac/top.js"></script>
 </html>

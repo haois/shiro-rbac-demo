@@ -1,7 +1,6 @@
 package gcu.shiro;
 
 import gcu.module.rbac.daomain.Resource;
-import gcu.module.rbac.daomain.Role;
 import gcu.module.rbac.daomain.User;
 import gcu.module.rbac.service.ResourceService;
 import gcu.module.rbac.service.RoleService;
@@ -40,21 +39,29 @@ public class PerRealm extends AuthorizingRealm {
         String username = (String) principalCollection.getPrimaryPrincipal();
         User user = userService.queryUserByName(username);
         int uid = user.getId();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
         logger.info("用户[{}]进入授权验证", username);
         try {
-            List<Role> roles = roleService.queryRoleByUser(uid);
+
+            //获取登录用户的角色列表,该demo中因为是以资源管理，所以未用到，如果使用角色管理则需要
+           /*
+           List<Role> roles = roleService.queryRoleByUser(uid);
             List<String> rolesStr = new ArrayList<String>();
             for (Role ro : roles) {
                 rolesStr.add(ro.getSn());
             }
+             info.setRoles(new HashSet<String>(rolesStr));
+             */
+
+
+             //获取登录用户的资源列表，此处直接根据用户id多表关联查询出
             List<Resource> resources = resourceService.queryResourceByUser(uid);
             List<String> permissions = new ArrayList<String>();
             for (Resource res : resources) {
                 permissions.add(res.getUrl());
             }
-            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            info.setRoles(new HashSet<String>(rolesStr));
+
             info.setStringPermissions(new HashSet<String>(permissions));
             logger.info("用户[{}]授权认证完成", username);
             return info;
