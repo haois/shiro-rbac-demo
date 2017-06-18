@@ -11,8 +11,11 @@
     <%@ include file="/common/meta.jsp" %>
 </head>
 <body class="login">
+<div class="row text-center">
+    <h1>基于Apache shiro 设计的权限管理demo</h1>
+</div>
 <div class="container" style="width: 300px">
-    <form action= "${ctx}/login/login" id="loginform" method="post">
+    <form action= "${ctx}/login/login" id="form" method="post">
     <div class="form-group" style="margin-top: 50px">
         <div class="input-group">
             <div class="input-group-addon">用户名</div>
@@ -27,7 +30,7 @@
     </div>
     <div class="form-group">
         <div class="input-group" style="margin: auto">
-           <button class="btn btn-success" type="button" id="loginbutton">登陆</button>
+           <button class="btn btn-success" type="button" id="subBtn">登陆</button>
         </div>
     </div>
         <div class="form-group">

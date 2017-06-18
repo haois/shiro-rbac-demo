@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="urlPermissionResolver" class="gcu.shiro.UrlPermissionResovler"/>
+    <bean id="urlPermissionResolver" class="gcu.shiro.UrlPermissionResolve"/>
     <!--配置角色认证和授权realm-->
     <bean id="permissionRealm" class="gcu.shiro.PerRealm">
        <!-- <property name="cachingEnabled" value="true"/>
@@ -13,8 +13,8 @@
         <property name="authorizationCacheName" value="shiro-authorizationCaching"/>-->
     </bean>
     <!-- 定义or角色过滤器 -->
-    <bean id="resourceFilter" class="gcu.shiro.ResourecCheckFilter">
-        <property name="errorUrl" value="rbac/noAuthority"/>
+    <bean id="resourceFilter" class="gcu.shiro.ResourceCheckFilter">
+        <property name="errorUrl" value="user/noAuthority"/>
     </bean>
     <!--定义info的加密算法-->
     <bean id="hashMatch" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -35,7 +35,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="loginUrl" value="/login/index"/>
         <property name="securityManager" ref="securityManager"/>
-        <property name="successUrl" value="/owner/list"/>
+        <property name="successUrl" value="/user/list"/>
         <property name="unauthorizedUrl" value="/user/noAuthority"/>
         <property name="filterChainDefinitions">
             <value>
@@ -47,7 +47,7 @@
 
                 /login/** = anon
                 /user/noAuthority = anon
-                /**=authc,resourceFilter
+                /**= authc,resourceFilter
 
             </value>
         </property>

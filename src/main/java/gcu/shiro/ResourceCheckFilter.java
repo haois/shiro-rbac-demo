@@ -5,15 +5,13 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.AccessControlContext;
 
 /**
  * Created by haol on 2016/9/12.
  */
-public class ResourecCheckFilter extends AccessControlFilter {
+public class ResourceCheckFilter extends AccessControlFilter {
 
     private String errorUrl;
     public String getErrorUrl() {
@@ -37,7 +35,7 @@ public class ResourecCheckFilter extends AccessControlFilter {
         System.out.println("你无权访问此页面");
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        response.sendRedirect(request.getContextPath()+"/user/noAuthority");
+        response.sendRedirect(request.getContextPath()+"/rbac/noAuthority");
         return false;
     }
 }
